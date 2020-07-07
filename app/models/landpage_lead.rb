@@ -1,3 +1,10 @@
+##################################
+# Web App with a DynamodDB table
+##################################
+
+# Class for DynamoDB table
+# This could also be another file you depend on locally.
+
 class LandpageLead
     include Aws::Record
     string_attr :id, hash_key: true
@@ -9,4 +16,4 @@ class LandpageLead
     string_attr :company_industry
     epoch_time_attr :created_at
     epoch_time_attr :updated_at    
-end
+  end

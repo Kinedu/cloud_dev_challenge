@@ -142,16 +142,37 @@
 
     function gsubmitForm() {
         // initiate variables with form content
-		var firstname = $("#gfirstname").val();
-		var lastname = $("#glastname").val();
-        var phone = $("#gphone").val();
-		var email = $("#gemail").val();
-		var company = $("#gcompany").val();
-        var select = $("#gselect").val();
-        var data_string =  "firstname=" + firstname + "lastname=" + lastname + "&phone=" + phone + "&email=" + email + "company=" + company + "&select=" + select 
+        let fdata = {}
+
+		fdata["first_name"] = $("#gfirstname").val();
+		fdata["last_name"] = $("#glastname").val();
+        fdata["phone"] = $("#gphone").val();
+		fdata["email"] = $("#gemail").val();
+		fdata["company"] = $("#gcompany").val();
+        fdata["industry"] = $("#gselect").val();
+       
+        
+        var data_string =  "firstname=" + fdata["first_name"] + "lastname=" + fdata["last_name"] + "&phone=" + fdata["phone"] + "&email=" + fdata["email"] + "company=" + fdata["company"] + "&industry=" + fdata["industry"] 
 
         console.log(data_string);
         gformSuccess();
+        $.ajax({
+            cache: false,
+            url : "api/lead",
+            type: "POST",
+            dataType : "json",
+            data : JSON.stringify(fdata),
+            success : function(callback){
+                if (callback == "success"){
+                    gformSuccess();
+                } else {
+                    alert("Error to save data");
+                    gformError();
+                    gsubmitMSG(false, callback);
+                }   
+            }
+        });
+
         // $.ajax({
         //     type: "POST",
         //     url: "php/getquoteform-process.php",
@@ -168,7 +189,7 @@
 	}
 
     function gformSuccess() {
-        $("#getEbookForm")[0].reset();
+        // $("#getEbookForm")[0].reset();
         gsubmitMSG(true, "Message Submitted!");
         $("input").removeClass('notEmpty'); // resets the field label after submission
     }

@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'rubygems'
 require 'aws-record'
 
 autoload :LandpageLead, File.join(File.dirname(__FILE__),'models','landpage_lead')
@@ -18,6 +19,7 @@ end
 get '/' do
   erb :index
 end
+
 
 get '/api/lead' do
   content_type :json

@@ -81,6 +81,10 @@ __Note__:
 You can also use an [Application Load Balancer](https://aws.amazon.com/elasticloadbalancing/features/#Details_for_Elastic_Load_Balancing_Products) instead of API gateway. 
 For details, please visit https://docs.aws.amazon.com/elasticloadbalancing/latest/application/lambda-functions.html
 
+0. Run the application in localhost
+
+        ruby app/server.rb
+
 What Do I Do Next?
 ------------------
 
