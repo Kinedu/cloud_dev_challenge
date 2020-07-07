@@ -1,6 +1,9 @@
 require 'sinatra'
 require 'aws-record'
 
+autoload :LandpageLead, File.join(File.dirname(__FILE__),'models','landpage_lead')
+
+
 before do
   if (! request.body.read.empty? and request.body.size > 0)
     request.body.rewind
@@ -16,18 +19,28 @@ get '/' do
   erb :index
 end
 
-##################################
-# Return a Hello world JSON
-##################################
-get '/hello-world' do
+get '/api/lead' do
   content_type :json
-  { :Output => 'Hello World!' }.to_json
+  items = LandpageLead.scan()
+  items
+    .map { |r| { :email => r.email, :company_industry => r.company_industry } }
+    .sort { |a, b| a[:created_at] <=> b[:created_at] }
+    .to_json
 end
 
-post '/hello-world' do
-    content_type :json
-    { :Output => 'Hello World!' }.to_json
+post '/api/lead' do
+  content_type :json
+  item = LandpageLead.new(id: SecureRandom.uuid, created_at: Time.now, updated_at: Time.now )
+  item.first_name = params[:first_name]
+  item.last_name = params[:last_name]
+  item.phone = params[:phone]
+  item.email = params[:email]
+  item.company_name = params[:company_name]
+  item.company_industry = params[:company_industry]
+  item.save! # raise an exception if save fails
+  item.to_h.to_json
 end
+
 
 ##################################
 # Web App with a DynamodDB table
@@ -42,6 +55,8 @@ class FeedbackServerlessSinatraTable
   string_attr :feedback
   epoch_time_attr :ts
 end
+
+
 
 get '/feedback' do
   erb :feedback
