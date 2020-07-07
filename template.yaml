@@ -11,6 +11,7 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref FeedbackTable
+            TableName: !Ref LeadsTable 
       CodeUri: "./"
       MemorySize: 512
       Timeout: 30
@@ -25,10 +26,10 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       Name: SinatraAPI
-      StageName: Prod
+      StageName: Production
       DefinitionBody:
         swagger: '2.0'
-        basePath: '/Prod'
+        basePath: '/'
         info:
           title: !Ref AWS::StackName
         paths:
@@ -68,7 +69,17 @@ Resources:
       ProvisionedThroughput: 
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
+  LeadsTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: LandpageLead
+      PrimaryKey: 
+        Name: id
+        Type: String
+      ProvisionedThroughput: 
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
 Outputs:
   SinatraAppUrl:
     Description: App endpoint URL
-    Value: !Sub "https://${SinatraAPI}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+    Value: !Sub "https://${SinatraAPI}.execute-api.${AWS::Region}.amazonaws.com/"

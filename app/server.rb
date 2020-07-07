@@ -1,8 +1,9 @@
 require 'sinatra'
 require 'rubygems'
 require 'aws-record'
+require_relative "models/landpage_lead.rb"
 
-autoload :LandpageLead, File.join(File.dirname(__FILE__),'models','landpage_lead')
+# autoload :LandpageLead, File.join(File.dirname(__FILE__),'models','landpage_lead.rb')
 
 
 before do

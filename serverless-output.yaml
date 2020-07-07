@@ -10,8 +10,8 @@ Resources:
       Policies:
       - DynamoDBCrudPolicy:
           TableName:
-            Ref: FeedbackTable
-      CodeUri: s3://serverless-sinatra-example-bucket/303b00b06089dc445d653104e895cbdb
+            Ref: LeadsTable
+      CodeUri: s3://serverless-sinatra-example-bucket/ed3e4683b034f10ac7c04f686ad5b520
       MemorySize: 512
       Timeout: 30
       Events:
@@ -26,10 +26,10 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       Name: SinatraAPI
-      StageName: Prod
+      StageName: Production
       DefinitionBody:
         swagger: '2.0'
-        basePath: /Prod
+        basePath: /
         info:
           title:
             Ref: AWS::StackName
@@ -71,8 +71,18 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
+  LeadsTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: LandpageLead
+      PrimaryKey:
+        Name: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
 Outputs:
   SinatraAppUrl:
     Description: App endpoint URL
     Value:
-      Fn::Sub: https://${SinatraAPI}.execute-api.${AWS::Region}.amazonaws.com/Prod/
+      Fn::Sub: https://${SinatraAPI}.execute-api.${AWS::Region}.amazonaws.com/

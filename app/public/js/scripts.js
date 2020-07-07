@@ -166,7 +166,7 @@
                 if (callback == "success"){
                     gformSuccess();
                 } else {
-                    alert("Error to save data");
+                    alert("Error saving data");
                     gformError();
                     gsubmitMSG(false, callback);
                 }   
