@@ -2,6 +2,7 @@ require 'sinatra'
 require 'rubygems'
 require 'aws-record'
 require_relative "models/landpage_lead.rb"
+require_relative "controllers/landpage_lead_controller.rb"
 
 
 before do
@@ -20,65 +21,19 @@ get '/' do
 end
 
 
+
+##################################
+# For the API
+##################################
+
 get '/api/lead' do
   content_type :json
-  items = LandpageLead.scan()
-  items
-    .map { |r| { :first_name => r.first_name, :last_name => r.last_name,:email => r.email, :phone => r.phone, :company => r.company, :company_industry => r.company_industry } }
-    .sort { |a, b| a[:created_at] <=> b[:created_at] }
-    .to_json
+  items = LandpageLeadController.list
 end
 
 post '/api/lead' do
   content_type :json
-  item = LandpageLead.new(id: SecureRandom.uuid, created_at: Time.now, updated_at: Time.now )
-  item.first_name = params[:first_name]
-  item.last_name = params[:last_name]
-  item.phone = params[:phone]
-  item.email = params[:email]
-  item.company_name = params[:company]
-  item.company_industry = params[:industry]
-  p item
-  item.save! # raise an exception if save fails
+  item = LandpageLeadController.create(params)
   item.to_h.to_json
 end
 
-
-##################################
-# Web App with a DynamodDB table
-##################################
-
-# Class for DynamoDB table
-# This could also be another file you depend on locally.
-class FeedbackServerlessSinatraTable
-  include Aws::Record
-  string_attr :id, hash_key: true
-  string_attr :name
-  string_attr :feedback
-  epoch_time_attr :ts
-end
-
-
-
-get '/feedback' do
-  erb :feedback
-end
-
-get '/api/feedback' do
-  content_type :json
-  items = FeedbackServerlessSinatraTable.scan()
-  items
-    .map { |r| { :ts => r.ts, :name => r.name, :feedback => r.feedback } }
-    .sort { |a, b| a[:ts] <=> b[:ts] }
-    .to_json
-end
-
-post '/api/feedback' do
-  content_type :json
-  item = FeedbackServerlessSinatraTable.new(id: SecureRandom.uuid, ts: Time.now)
-  item.name = params[:name]
-  item.feedback = params[:feedback]
-  item.save! # raise an exception if save fails
-
-  item.to_h.to_json
-end
