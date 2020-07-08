@@ -5,7 +5,7 @@
 # Class for DynamoDB table
 # This could also be another file you depend on locally.
 
-class LandpageLead
+class LandpageLeads
     include Aws::Record
     string_attr :id, hash_key: true
     string_attr :first_name
