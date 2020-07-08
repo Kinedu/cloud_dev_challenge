@@ -11,14 +11,14 @@ El departamento de marketing quiere agregar una nueva sección a la landpage de 
 ![Architecture Diagram](/docs/request.png)
 
 
-__SETUP__
+## SETUP
 
 Antes de comenzar necesitas tener una cuenta en github, una cuenta en AWS, Ruby 2.5 en adelante y AWS CLI instalados en tu computadora.
 
-Para comenzar, haz un clone del código del proyecto que se encuentra en aquí. Instala el stack de componente que ya está definido en el template de Cloudformation en tu cuenta de AWS. Puedes seguir las instrucciones que estan en la sección 'Deploying the app in the cloud' en este mismo README.
+Para comenzar, haz un clone del código del proyecto que se encuentra en aquí. Instala el stack de componente que ya está definido en el template de Cloudformation en tu cuenta de AWS. Puedes seguir las instrucciones que estan en la sección 'Deploy in the cloud' en este mismo README.
 
 
-__QUICK FIXES__
+## QUICK FIXES
 
 Para que te familiarices con el código comenzaremos con hacer una validación en la forma del ebook (localhost:4567/landpage). Actualmente acepta enviar el formulario en blanco y no valida el formato del email. La validación la puedes realizar en cualquier capa de la aplicación, solo considera notificarle al usuario en la vista que su forma no fue aceptada por no cumplir alguna validación.
 - Valida que la forma no acepte campos en blanco
@@ -27,53 +27,52 @@ Para que te familiarices con el código comenzaremos con hacer una validación e
 ![Leads form screenshoot](/docs/form_1.png)
 
 
-__NEW FEATURE__
+## NEW FEATURE
 
 Ahora que ya conoces mejor el proyecto, es momento de agregar una nueva funcionalidad.
 Se necesita hacer funcional la forma de contacto de manera que cada vez que un usuario llene la forma con su nombre, email y mensaje, se guarden estos datos en una nueva tabla en DynamoDB. Los datos de esta tabla serán visibles al invocar un endpoint que liste en formato JSON los mensaje recibidos. Finalmente todos los usuarios que envíen un mensaje desde la forma de contacto, deberán de ser guardados también en la tabla de 'LandpageLeads'.
 
 ![Contact form screenshoot](/docs/form_2.png)
 
-1.  Crea una tabla nueva
+1. Crea una tabla nueva
 
-Crea una tabla nueva en DynamoDB llamada  'ContactMessages' con 2 unidades de capacidad de lectura y 2 unidades de escritura, configura ID como llave primaria y Email como llave secundaria global. Actualiza el template de Cloudformation que se incluye en el código 'template.yml' para crear la tabla.
+        Crea una tabla nueva en DynamoDB llamada  'ContactMessages' con 2 unidades de capacidad de lectura y 2 unidades de escritura, configura ID como llave primaria y Email como llave secundaria global. Actualiza el template de Cloudformation que se incluye en el código 'template.yml' para crear la tabla.
 
-![table diagram](/docs/tables.png)
+        ![table diagram](/docs/tables.png)
 
 
 2. Crea los endpoints
 
-Crea los nuevos endpoints en API que permiten crear, ver y buscar la lista de mensajes de contacto siguiendo el diseño del API.
+        Crea los nuevos endpoints en API que permiten crear, ver y buscar la lista de mensajes de contacto siguiendo el diseño del API.
 
-![api design](/docs/api.png)
+        ![api design](/docs/api.png)
 
-
-![object design](/docs/object.png)
+        ![object design](/docs/object.png)
 
 
 3. Conecta la vista con el API
 
-Conecta el endpoint con la vista de la forma de contacto. Valida que no se envíe una forma vacía y el formato del correo electrónico sea el correcto. Cuando la forma de contacto haya sido guardada en la tabla de Dynamo, notifica al usuario en la vista que su forma ha sido enviada.
+        Conecta el endpoint con la vista de la forma de contacto. Valida que no se envíe una forma vacía y el formato del correo electrónico sea el correcto. Cuando la forma de contacto haya sido guardada en la tabla de Dynamo, notifica al usuario en la vista que su forma ha sido enviada.
 
-Al guardar la forma de contacto también guarda los datos del usuario (email y nombre) en la tabla de 'LandpageLeads'. Al crear un nuevo registro en la tabla de leads pueden existir campos en blanco excepto el de ID.
+        Al guardar la forma de contacto también guarda los datos del usuario (email y nombre) en la tabla de 'LandpageLeads'. Al crear un nuevo registro en la tabla de leads pueden existir campos en blanco excepto el de ID.
 
 4. Envia tu código y limpia tu entorno
 
-Al terminar, actualiza el código en Github, envía la liga de tu git al correo evelin@kinedu.com 
-**MUY IMPORTANTE: Elimina el stack de tu cuenta de AWS para que no te genere costo.** https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-delete-stack.html
+        Al terminar, actualiza el código en Github, envía la liga de tu git al correo evelin@kinedu.com 
+        **MUY IMPORTANTE: Elimina el stack de tu cuenta de AWS para que no te genere costo.** https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-delete-stack.html
 
 
-__EXTRAS__
+## EXTRAS
 La prueba tiene una duración de 2-4 horas y se evalúa que los requerimientos hayan sido completados exitosamente. Cualquier funcionalidad adicional como autenticación, implementación de pruebas, paginación, manejo de errores, mejora de diseño visual u otra funcionalidad o validación que desees agregar se considerará como puntos extras para la evaluación de la prueba y son completamente opcionales pero puede ayudarte a demostrar habilidades que los requerimientos principales no abarcan. Al enviar la prueba, **por favor notifica las funcionalidades extras para incluirlas en la evaluación.**
 
 
-__TIPS__
+## TIPS
 - Lee el código, podrás encontrar parte de la solución en otras funcionalidades ya programadas. Aun así, si crees que hay una mejor forma de solucionar las tareas te invitamos a que nos compartas tus propuestas. 
 - Al final de este documento agregamos ligas de algunas referencias que te pueden ser útiles si no estás familiarizado con algunas de las tecnologías que usa este proyecto.
 - Cualquier duda que tengas acerca de las tareas puedes enviarla a evelin@kinedu.com
 
 
-__RECURSOS__
+## RECURSOS
 
 If it's your first time working with SAM, this article could help https://medium.com/@gurlgilt/deploying-aws-sam-lambda-api-gateway-dynamodb-and-s3-ad11e619d322
 
@@ -91,7 +90,7 @@ Search with Dynamo https://docs.aws.amazon.com/amazondynamodb/latest/developergu
 
 
 
-##DEPLOYING THE APP IN THE CLOUD
+## DEPLOY IN THE CLOUD
 -----------
 
 This exercise includes:
