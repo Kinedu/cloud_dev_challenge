@@ -11,6 +11,7 @@ Resources:
       Policies:
         - DynamoDBCrudPolicy:
             TableName: !Ref LeadsTable 
+
       CodeUri: "./"
       MemorySize: 512
       Timeout: 30
@@ -61,12 +62,10 @@ Resources:
   LeadsTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
-      TableName: LandpageLead
+      TableName: LandpageLeads
       PrimaryKey: 
         Name: id
         Type: String
-      GlobalSecondaryIndexes: 
-        - email
       ProvisionedThroughput: 
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5

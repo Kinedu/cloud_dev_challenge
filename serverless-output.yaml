@@ -11,7 +11,10 @@ Resources:
       - DynamoDBCrudPolicy:
           TableName:
             Ref: LeadsTable
-      CodeUri: s3://serverless-sinatra-example-bucket/5852f6b4ee91d776e8a8c1c197d241b9
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: SubscribersTable
+      CodeUri: s3://serverless-sinatra-example-bucket/371a1041a01b3b64b9e4d941521dd25f
       MemorySize: 512
       Timeout: 30
       Events:
@@ -61,16 +64,6 @@ Resources:
       FunctionName:
         Ref: SinatraFunction
       Principal: apigateway.amazonaws.com
-  FeedbackTable:
-    Type: AWS::Serverless::SimpleTable
-    Properties:
-      TableName: FeedbackServerlessSinatraTable
-      PrimaryKey:
-        Name: id
-        Type: String
-      ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
   LeadsTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
@@ -81,6 +74,33 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
+  SubscribersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: id
+        AttributeType: S
+      - AttributeName: email
+        AttributeType: S
+      KeySchema:
+      - AttributeName: id
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: EmailSubscribers
+      GlobalSecondaryIndexes:
+      - IndexName: myGSI
+        KeySchema:
+        - AttributeName: email
+          KeyType: HASH
+        Projection:
+          NonKeyAttributes:
+          - email
+          ProjectionType: INCLUDE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
 Outputs:
   SinatraAppUrl:
     Description: App endpoint URL

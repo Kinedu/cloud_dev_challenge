@@ -17,9 +17,12 @@ end
 # For the index page
 ##################################
 get '/' do
-  erb :index
+  erb :landpage
 end
 
+get '/landpage' do
+  erb :landpage
+end
 
 
 ##################################

@@ -18,6 +18,7 @@ class LandpageLeadController
         item.company_name = params[:company]
         item.company_industry = params[:industry]
         item.save!
+        item
     end
 
 end
