@@ -3,8 +3,6 @@ require 'rubygems'
 require 'aws-record'
 require_relative "models/landpage_lead.rb"
 
-# autoload :LandpageLead, File.join(File.dirname(__FILE__),'models','landpage_lead.rb')
-
 
 before do
   if (! request.body.read.empty? and request.body.size > 0)
@@ -26,7 +24,7 @@ get '/api/lead' do
   content_type :json
   items = LandpageLead.scan()
   items
-    .map { |r| { :email => r.email, :company_industry => r.company_industry } }
+    .map { |r| { :first_name => r.first_name, :last_name => r.last_name,:email => r.email, :phone => r.phone, :company => r.company, :company_industry => r.company_industry } }
     .sort { |a, b| a[:created_at] <=> b[:created_at] }
     .to_json
 end
@@ -38,8 +36,9 @@ post '/api/lead' do
   item.last_name = params[:last_name]
   item.phone = params[:phone]
   item.email = params[:email]
-  item.company_name = params[:company_name]
-  item.company_industry = params[:company_industry]
+  item.company_name = params[:company]
+  item.company_industry = params[:industry]
+  p item
   item.save! # raise an exception if save fails
   item.to_h.to_json
 end

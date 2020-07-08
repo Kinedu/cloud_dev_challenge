@@ -12,8 +12,6 @@
 	<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,400i,700,700i&display=swap" rel="stylesheet">
     <link href="https://serverless-sinatra-assets.s3.amazonaws.com/css/bootstrap.css" rel="stylesheet">
     <link href="https://serverless-sinatra-assets.s3.amazonaws.com/css/fontawesome-all.css" rel="stylesheet">
-    <link href="https://serverless-sinatra-assets.s3.amazonaws.com/css/swiper.css" rel="stylesheet">
-	<link href="https://serverless-sinatra-assets.s3.amazonaws.com/css/magnific-popup.css" rel="stylesheet">
 	<link href="https://serverless-sinatra-assets.s3.amazonaws.com/css/styles.css" rel="stylesheet">
 	
 	<!-- Favicon  -->
@@ -152,14 +150,83 @@
 
     	
     <!-- Scripts -->
-    <script src="https://serverless-sinatra-assets.s3.amazonaws.com/js/jquery.min.js"></script> <!-- jQuery for Bootstrap's JavaScript plugins -->
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+    integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+    crossorigin="anonymous">
+    </script>
+    <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous">
+    </script> <!-- jQuery for Bootstrap's JavaScript plugins -->
     <script src="https://serverless-sinatra-assets.s3.amazonaws.com/js/popper.min.js"></script> <!-- Popper tooltip library for Bootstrap -->
     <script src="https://serverless-sinatra-assets.s3.amazonaws.com/js/bootstrap.min.js"></script> <!-- Bootstrap framework -->
-    <script src="https://serverless-sinatra-assets.s3.amazonaws.com/js/jquery.easing.min.js"></script> <!-- jQuery Easing for smooth scrolling between anchors -->
-    <script src="https://serverless-sinatra-assets.s3.amazonaws.com/js/swiper.min.js"></script> <!-- Swiper for image and text sliders -->
-    <script src="https://serverless-sinatra-assets.s3.amazonaws.com/js/jquery.magnific-popup.js"></script> <!-- Magnific Popup for lightboxes -->
     <script src="https://serverless-sinatra-assets.s3.amazonaws.com/js/validator.min.js"></script> <!-- Validator.js - Bootstrap plugin that validates forms -->
     <script src="https://serverless-sinatra-assets.s3.amazonaws.com/js/scripts.js"></script> <!-- Custom scripts -->
+    
+    <script>
+    $(document).ready(function() {
+
+      $("#getEbookForm").submit(function(e){
+        e.preventDefault();
+        let fdata = {}
+
+		fdata["first_name"] = $("#gfirstname").val();
+		fdata["last_name"] = $("#glastname").val();
+        fdata["phone"] = $("#gphone").val();
+		fdata["email"] = $("#gemail").val();
+		fdata["company"] = $("#gcompany").val();
+        fdata["industry"] = $("#gselect").val();
+       
+        
+        var data_string =  "firstname=" + fdata["first_name"] + "lastname=" + fdata["last_name"] + "&phone=" + fdata["phone"] + "&email=" + fdata["email"] + "&company=" + fdata["company"] + "&industry=" + fdata["industry"] 
+
+        console.log(fdata);
+        gformSuccess();
+        $.ajax({
+            cache: false,
+            url : "api/lead",
+            type: "POST",
+            dataType : "json",
+            data : JSON.stringify(fdata),
+            success : function(callback){
+                gformSuccess(); 
+            },
+            error : function(callback){
+                alert("Error saving data");
+                gformError();
+                gsubmitMSG(false, callback);
+            }
+        });
+      });
+    });
+    
+
+    
+    function gformSuccess() {
+        $("#getEbookForm")[0].reset();
+        gsubmitMSG(true, "Congratulations, your ebook is on the way!");
+        $("input").removeClass('notEmpty'); // resets the field label after submission
+    }
+
+    function gformError() {
+        $("#getEbookForm").removeClass().addClass('shake animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function() {
+            $(this).removeClass();
+        });
+	}
+
+    function gsubmitMSG(valid, msg) {
+        if (valid) {
+            var msgClasses = "h3 text-center tada animated";
+        } else {
+            var msgClasses = "h3 text-center";
+        }
+        $("#gmsgSubmit").removeClass().addClass(msgClasses).text(msg);
+	}
+    
+    </script>
+    
     
 </body>
 </html>

@@ -10,7 +10,6 @@ Resources:
       Runtime: ruby2.5
       Policies:
         - DynamoDBCrudPolicy:
-            TableName: !Ref FeedbackTable
             TableName: !Ref LeadsTable 
       CodeUri: "./"
       MemorySize: 512
@@ -26,7 +25,7 @@ Resources:
     Type: AWS::Serverless::Api
     Properties:
       Name: SinatraAPI
-      StageName: Production
+      StageName: Prod
       DefinitionBody:
         swagger: '2.0'
         basePath: '/'
@@ -59,16 +58,6 @@ Resources:
       Action: lambda:InvokeFunction
       FunctionName: !Ref SinatraFunction
       Principal: apigateway.amazonaws.com
-  FeedbackTable:
-    Type: AWS::Serverless::SimpleTable
-    Properties:
-      TableName: FeedbackServerlessSinatraTable
-      PrimaryKey: 
-        Name: id
-        Type: String
-      ProvisionedThroughput: 
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
   LeadsTable:
     Type: AWS::Serverless::SimpleTable
     Properties:
@@ -76,10 +65,12 @@ Resources:
       PrimaryKey: 
         Name: id
         Type: String
+      GlobalSecondaryIndexes: 
+        - email
       ProvisionedThroughput: 
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
 Outputs:
   SinatraAppUrl:
     Description: App endpoint URL
-    Value: !Sub "https://${SinatraAPI}.execute-api.${AWS::Region}.amazonaws.com/"
+    Value: !Sub "https://${SinatraAPI}.execute-api.${AWS::Region}.amazonaws.com/Prod"
