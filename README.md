@@ -34,32 +34,32 @@ Se necesita hacer funcional la forma de contacto de manera que cada vez que un u
 
 ![Contact form screenshoot](/docs/form_2.png)
 
-1. Crea una tabla nueva
+**1.Crea una tabla nueva**
 
-        Crea una tabla nueva en DynamoDB llamada  'ContactMessages' con 2 unidades de capacidad de lectura y 2 unidades de escritura, configura ID como llave primaria y Email como llave secundaria global. Actualiza el template de Cloudformation que se incluye en el código 'template.yml' para crear la tabla.
+Crea una tabla nueva en DynamoDB llamada  'ContactMessages' con 2 unidades de capacidad de lectura y 2 unidades de escritura, configura ID como llave primaria y Email como llave secundaria global. Actualiza el template de Cloudformation que se incluye en el código 'template.yml' para crear la tabla.
 
-        ![table diagram](/docs/tables.png)
-
-
-2. Crea los endpoints
-
-        Crea los nuevos endpoints en API que permiten crear, ver y buscar la lista de mensajes de contacto siguiendo el diseño del API.
-
-        ![api design](/docs/api.png)
-
-        ![object design](/docs/object.png)
+![table diagram](/docs/tables.png)
 
 
-3. Conecta la vista con el API
+**2.Crea los endpoints**
 
-        Conecta el endpoint con la vista de la forma de contacto. Valida que no se envíe una forma vacía y el formato del correo electrónico sea el correcto. Cuando la forma de contacto haya sido guardada en la tabla de Dynamo, notifica al usuario en la vista que su forma ha sido enviada.
+Crea los nuevos endpoints en API que permiten crear, ver y buscar la lista de mensajes de contacto siguiendo el diseño del API.
 
-        Al guardar la forma de contacto también guarda los datos del usuario (email y nombre) en la tabla de 'LandpageLeads'. Al crear un nuevo registro en la tabla de leads pueden existir campos en blanco excepto el de ID.
+![api design](/docs/api.png)
 
-4. Envia tu código y limpia tu entorno
+![object design](/docs/object.png)
 
-        Al terminar, actualiza el código en Github, envía la liga de tu git al correo evelin@kinedu.com 
-        **MUY IMPORTANTE: Elimina el stack de tu cuenta de AWS para que no te genere costo.** https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-delete-stack.html
+
+**3.Conecta la vista con el API**
+
+Conecta el endpoint con la vista de la forma de contacto. Valida que no se envíe una forma vacía y el formato del correo electrónico sea el correcto. Cuando la forma de contacto haya sido guardada en la tabla de Dynamo, notifica al usuario en la vista que su forma ha sido enviada.
+
+Al guardar la forma de contacto también guarda los datos del usuario (email y nombre) en la tabla de 'LandpageLeads'. Al crear un nuevo registro en la tabla de leads pueden existir campos en blanco excepto el de ID.
+
+**4. Envia tu código y limpia tu entorno**
+
+Al terminar, actualiza el código en Github, envía la liga de tu git al correo evelin@kinedu.com 
+**MUY IMPORTANTE: Elimina el stack de tu cuenta de AWS para que no te genere costo.** https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/cfn-console-delete-stack.html
 
 
 ## EXTRAS
